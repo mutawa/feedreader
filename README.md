@@ -9,5 +9,5 @@ It is basically like an RSS Feed application, and the project is designed to mak
 Locate the `index.html` file, and open it using an HTML5 browser, such as Chrome or Firefox.
 
 ## Libraries/dependencies
-    * [Jasmine](https://jasmine.github.io/)
-    * [jQuery](https://jquery.com/)
+   * [Jasmine](https://jasmine.github.io/)
+   * [jQuery](https://jquery.com/)
