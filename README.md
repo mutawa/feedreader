@@ -28,7 +28,7 @@ If you have managed to open `index.html` properly in your browser, the applicati
         should be loaded (at least 1)
 
     New Feed Selection
-        should change .feed container after loading
+        should have different content for different feed url
 ```
 If all of the above lines appear in green color, then all the test have passed. 
 If, however, any test appears in red (with a cross icon before it), then that test had failed.

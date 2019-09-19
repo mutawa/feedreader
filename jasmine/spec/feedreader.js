@@ -25,9 +25,12 @@ $(function() {
             // the first test above.
 
             allFeeds.forEach(function(feed){
+
                 // the test requires ensuring that the url property exists
-                // so we don't need to check its length, or validity of the URL
                 expect(feed.url).toBeDefined();
+
+                // now we check that the url property is not empty (zero length string)
+                expect(feed.url.length).not.toBe(0);
             });
         });
 
@@ -114,26 +117,63 @@ $(function() {
     
     describe("New Feed Selection", function(){
         
-        let contentsBeforeLoading = $(".feed").html();  // grab html of container
-        let contentsAfterLoading;  // place holder for html after loading
+        let testReslts = [];  // this array is a place holder for test results
         
+         let firstTestIsDone = false;  // flags to be used in async calls
+        let secondTestIsDone = false;
+
         // async prep work
         beforeEach(function(done){
-            // do the actual loading
+            // load the first url from allFeeds (arbitrary choice)
             loadFeed(0, function(){
-                done();
+                
+                firstTestIsDone = true;
+                // capture the html from the .feed element
+                testReslts.push( $(".feed").html() );
+
+                // in case the second test had finished before this test
+                // only call done() if both tests are actually done
+                if(secondTestIsDone) {
+                    done();
+                }
+            });
+
+            // load the second url from allFeeds (a different arbitrary choice)
+            loadFeed(1, function(){
+
+                // the second test is finished loading
+                secondTestIsDone = true;
+
+                // capture the output html from the .feed element
+                testReslts.push( $(".feed").html() );
+
+                // make sure to check with the first test if it is done
+                // if so, then signal the done() to carry out the expect()
+                // otherwise, the first test will do the call if it finishes last
+                if(firstTestIsDone) {
+                    done();
+                }
             });
         });
 
-        it("should change .feed container after loading", function(done){
-            // grab the html after loading is finished.
-            contentsAfterLoading = $(".feed").html();
+        it("should have different content for different feed url", function(done){
+            
+            // at this point, this function should only be called
+            // if the two tests above have been run.
+            // this means that the testResults array should 
+            // contain 2 elements. Let's make sure of that
+            
+            expect(testReslts.length).toBe(2);
 
-            // the html after loading should be different than before
-            expect(contentsAfterLoading).not.toBe(contentsBeforeLoading);
+            // at this point, the 2 elements in the array should have
+            // different contents. Let's assert that as well.
+            expect(testReslts[0]).not.toBe(testReslts[1]);
+
+            done();    
 
 
-            done();
+            
+
         });
 
 
